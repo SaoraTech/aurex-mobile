@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ComponentRef } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 import { StatusBar } from 'expo-status-bar';
 import { BrandMark } from '../../components/BrandMark';
 import { ApiStatus } from '../../components/ApiStatus';
@@ -271,7 +272,14 @@ export default function ChatScreen() {
           </>
         ) : (
           <View style={styles.messages}>
-            {messages.map((message) => <MessageBubble key={message.id} {...message} />)}
+            {messages.map((message) => (
+              <MessageBubble
+                key={message.id}
+                {...message}
+                onCopy={() => Clipboard.setStringAsync(message.content)}
+                onShare={async () => { await Share.share({ message: message.content, title: 'Réponse Aurex' }); }}
+              />
+            ))}
           </View>
         )}
       </ScrollView>
