@@ -206,7 +206,11 @@ export default function ChatScreen() {
     streamRef.current?.close();
     streamRef.current = null;
     setSending(false);
-    await signOut();
+    try {
+      await signOut();
+    } catch {
+      // Local credentials are cleared even if the remote sign-out request fails.
+    }
   };
 
   return (
