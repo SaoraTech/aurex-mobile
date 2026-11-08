@@ -276,7 +276,7 @@ export default function ChatScreen() {
               <MessageBubble
                 key={message.id}
                 {...message}
-                onCopy={() => Clipboard.setStringAsync(message.content)}
+                onCopy={async () => { await Clipboard.setStringAsync(message.content); }}
                 onShare={async () => { await Share.share({ message: message.content, title: 'Réponse Aurex' }); }}
               />
             ))}
