@@ -19,7 +19,7 @@ The dependency versions are retained from the repository baseline. Add new nativ
 
 ## Getting started
 
-1. Install Node.js **22.13.0 or newer**.
+1. Install a Node.js release supported by Expo SDK 58 (see the [SDK 58 documentation](https://docs.expo.dev/versions/v58.0.0/)).
 2. Install dependencies:
 
    ```bash
