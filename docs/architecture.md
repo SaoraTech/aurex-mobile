@@ -7,31 +7,50 @@ The mobile application is a conversational mathematics assistant. It consumes th
 ## Current structure
 
 ```text
+App.tsx
 src/
-  components/          Shared visual components
+  AppRoot.tsx
+  components/
+    ApiStatus.tsx
+    BrandMark.tsx
+    IconButton.tsx
   core/
-    api/               Typed JSON client, API contracts and health request
-    config/            Runtime API configuration
-  features/
-    chat/
-      api/             Authenticated chat and conversation requests
-      components/      Chat-specific presentation components
-      ChatScreen.tsx  Authenticated chat shell and streaming interaction
-      api/             Chat requests and native SSE stream
+    api/
+      apiClient.ts
+      apiTypes.ts
+      authenticatedRequest.ts
+      healthApi.ts
     auth/
-      AuthScreen.tsx   Email/password sign-in and registration
+      AuthProvider.tsx
+      authApi.ts
+      authClient.ts
+      tokenStorage.ts
+    config/
+      apiConfig.ts
+  features/
+    auth/
+      AuthScreen.tsx
+    chat/
+      ChatScreen.tsx
+      api/
+        chatApi.ts
+        chatStream.ts
+      components/
+        Composer.tsx
+        MessageBubble.tsx
+        PromptCard.tsx
     system/
-      useApiStatus.ts  Backend readiness state
+      useApiStatus.ts
   theme/
-    tokens.ts          Aurex color, spacing, radius and typography tokens
+    tokens.ts
 ```
 
 ## Client boundaries
 
-- **App shell:** application bootstrap, global providers, navigation and screen lifecycle.
+- **App shell:** application bootstrap, auth provider and screen lifecycle.
 - **Design system:** semantic colors, typography, spacing, radii, reusable controls and responsive layout primitives.
 - **Features:** authentication, conversation list, chat, attachments, account and subscription screens.
-- **Core services:** typed API client, session/token handling, configuration and shared error handling.
+- **Core services:** typed API client, bearer-token session handling, runtime configuration and shared error handling.
 - **Platform adapters:** secure storage, file access, audio and platform-specific behavior.
 
 Feature UI must not call the backend directly. Screens and components should depend on feature-level hooks/use-cases, which in turn use the core API client.
@@ -40,10 +59,10 @@ Feature UI must not call the backend directly. Screens and components should dep
 
 - The API base URL is environment configuration, not a source-code constant.
 - The mobile app must not contain provider API keys or backend secrets.
-- Better Auth uses the backend's bearer plugin; native bearer tokens are persisted in Expo SecureStore.
+- Better Auth uses the backend's bearer plugin; native bearer tokens are persisted in Expo SecureStore. Web development keeps the token in memory only.
 - The UI must not expose a model selector.
-- Mathematical answers must be rendered safely, including Markdown and LaTeX, without evaluating model output as code.
-- Streaming, retries, cancellation and error states must be designed as explicit API-client behavior.
+- The chat stream uses the backend's `delta`, `done` and `error` events. A client disconnect closes the stream and lets the backend stop generation.
+- Mathematical answers must eventually be rendered safely, including Markdown and LaTeX, without evaluating model output as code.
 - Do not simulate assistant replies or claim a request was sent when the backend is not connected.
 
 ## Visual direction
@@ -53,11 +72,11 @@ The approved Aurex identity is the source of truth: blue/indigo/cyan/violet pale
 ## Delivery sequence
 
 1. **Repository foundations:** repository hygiene, SDK compatibility, environment conventions and architecture documentation.
-2. **Engineering baseline:** strict TypeScript configuration, ESLint, typecheck scripts and typed API contracts.
+2. **Engineering baseline:** strict TypeScript, ESLint, typecheck scripts and typed API contracts.
 3. **Design system and shell:** tokens, reusable components, welcome state, responsive layout and accessibility.
-4. **Backend integration:** connect Better Auth bearer sessions and the verified chat/SSE contract; backend route inventory is recorded in [backend-contract.md](backend-contract.md).
-5. **Chat experience:** conversation history, composer, message states, Markdown/LaTeX and streaming refinements.
-7. **Extended capabilities:** attachments, audio, subscription/account surfaces as supported by backend contracts.
+4. **Authentication:** Better Auth email/password sign-in and registration, bearer-token persistence and session restoration.
+5. **Chat experience:** streamed responses, conversation history, message states, Markdown/LaTeX and robust cancellation.
+6. **Extended capabilities:** attachments, audio, subscription/account surfaces as supported by backend contracts.
 7. **Validation and release:** device testing, accessibility, performance, security review and Android/iOS builds.
 
 ## Explicitly deferred
@@ -66,8 +85,8 @@ Expo Router, state-management libraries, animation/gesture packages, list virtua
 
 ## Quality gates
 
-A change is not considered complete until the Expo SDK compatibility check, ESLint, TypeScript typecheck, Expo Doctor, production dependency audit and Android/iOS/web bundle export pass in CI. A cancelled or pending workflow is not a successful validation.
+A change is not considered complete until the Expo SDK compatibility check, ESLint, TypeScript typecheck, production dependency audit, Expo Doctor and Android/iOS/web bundle export pass in CI. A cancelled or pending workflow is not a successful validation.
 
 ## Documentation discipline
 
-Use Context7 with the exact SDK/library version before coding against Expo, React Native, React, navigation, storage, networking or UI packages. Prefer the versioned Expo SDK 58 documentation over unversioned examples.
+Use Context7 with the exact SDK/library version before coding against Expo, React Native, React, navigation, storage, networking or UI packages. Prefer versioned Expo SDK 58 documentation over unversioned examples.
