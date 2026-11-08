@@ -76,7 +76,7 @@ The approved Aurex identity is the source of truth: blue/indigo/cyan/violet pale
 2. **Engineering baseline:** strict TypeScript, ESLint, typecheck scripts and typed API contracts.
 3. **Design system and shell:** tokens, reusable components, welcome state, responsive layout and accessibility.
 4. **Authentication:** Better Auth email/password sign-in and registration, bearer-token persistence and session restoration.
-5. **Chat experience:** streamed responses, latest-conversation restoration, searchable conversation drawer, message states, native Markdown/LaTeX and cancellation.
+5. **Chat experience:** streamed responses, latest-conversation restoration, searchable conversation drawer, message states, native Markdown/LaTeX, copy/share actions and cancellation.
 6. **Extended capabilities:** attachments, audio, subscription/account surfaces as supported by backend contracts.
 7. **Validation and release:** device testing, accessibility, performance, security review and Android/iOS builds.
 
