@@ -30,22 +30,22 @@ const markdownStyle = {
   h1: {
     color: colors.text,
     fontSize: typography.size.xl,
-    fontWeight: '700' as const,
+    fontWeight: 'bold' as const,
     marginBottom: spacing.md,
   },
   h2: {
     color: colors.text,
     fontSize: typography.size.lg,
-    fontWeight: '700' as const,
+    fontWeight: 'bold' as const,
     marginBottom: spacing.sm,
   },
   h3: {
     color: colors.text,
     fontSize: typography.size.md,
-    fontWeight: '600' as const,
+    fontWeight: 'bold' as const,
     marginBottom: spacing.sm,
   },
-  strong: { color: colors.text, fontWeight: '700' as const },
+  strong: { color: colors.text, fontWeight: 'bold' as const },
   em: { color: colors.textSecondary },
   link: { color: colors.primary, underline: true },
   code: {
