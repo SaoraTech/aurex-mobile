@@ -36,7 +36,7 @@ jobs:
         run: |
           npm install --package-lock-only
           npm ci
-          npx expo install react-native-enriched-markdown expo-dev-client
+          npx expo install react-native-enriched-markdown expo-dev-client @expo-google-fonts/inter @expo-google-fonts/jetbrains-mono expo-font expo-splash-screen
           if ! git diff --quiet -- package.json package-lock.json app.json; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
