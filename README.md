@@ -56,4 +56,4 @@ The first mobile shell and initial Aurex design tokens are now present. The welc
 
 Authentication, navigation, live chat, streaming, mathematical rendering, attachments, audio and subscriptions are not yet implemented.
 
-See [docs/architecture.md](docs/architecture.md) for the client architecture and implementation sequence.
+See [docs/architecture.md](docs/architecture.md) for the client architecture, [docs/backend-contract.md](docs/backend-contract.md) for verified API contracts, and the implementation sequence.
