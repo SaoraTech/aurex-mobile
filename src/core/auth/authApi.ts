@@ -71,13 +71,15 @@ export async function getCurrentSession() {
 
 export async function signOut() {
   await hydrateBearerToken();
-  const result = await authClient.signOut();
-
-  if (result.error) {
-    throw new AuthError(result.error.message || 'Déconnexion impossible.', result.error.code || 'AUTH_SIGN_OUT_FAILED');
+  try {
+    const result = await authClient.signOut();
+    if (result.error) {
+      throw new AuthError(result.error.message || 'Déconnexion impossible.', result.error.code || 'AUTH_SIGN_OUT_FAILED');
+    }
+  } finally {
+    // Clear the device session even if the server is temporarily unavailable.
+    await clearBearerToken();
   }
-
-  await clearBearerToken();
 }
 
 export async function restoreBearerToken(): Promise<string | null> {
