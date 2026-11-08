@@ -1,9 +1,10 @@
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { BrandMark } from '../../components/BrandMark';
-import { IconButton } from '../../components/IconButton';
 import { PromptCard } from './components/PromptCard';
 import { Composer } from './components/Composer';
+import { ApiStatus } from '../../components/ApiStatus';
+import { useApiStatus } from '../system/useApiStatus';
 import { colors, radius, spacing, typography } from '../../theme/tokens';
 
 const prompts = [
@@ -14,6 +15,8 @@ const prompts = [
 ];
 
 export default function ChatScreen() {
+  const apiStatus = useApiStatus();
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -28,10 +31,7 @@ export default function ChatScreen() {
             <Text style={styles.brandCaption}>Votre assistant mathématique</Text>
           </View>
         </View>
-        <View style={styles.headerActions}>
-          <IconButton label="＋" accessibilityLabel="Nouvelle conversation" disabled />
-          <IconButton label="☰" accessibilityLabel="Ouvrir le menu" variant="muted" disabled />
-        </View>
+        <ApiStatus status={apiStatus} />
       </View>
 
       <ScrollView
@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
   brand: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   brandName: { color: colors.text, fontSize: typography.size.lg, fontWeight: typography.weight.bold, letterSpacing: -0.4 },
   brandCaption: { color: colors.textMuted, fontSize: typography.size.xs, marginTop: 2 },
-  headerActions: { flexDirection: 'row', gap: spacing.sm },
   content: { paddingHorizontal: spacing.xl, paddingTop: spacing.xxxl, paddingBottom: spacing.xxl },
   hero: { marginBottom: spacing.xxxl },
   eyebrow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.lg },
