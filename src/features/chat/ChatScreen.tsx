@@ -91,6 +91,9 @@ export default function ChatScreen() {
   };
 
   const selectConversation = async (id: string) => {
+    streamRef.current?.close();
+    streamRef.current = null;
+    setSending(false);
     try {
       const token = await restoreBearerToken();
       if (!token) return;
@@ -199,6 +202,13 @@ export default function ChatScreen() {
     setDraft(`${title} : `);
   };
 
+  const handleSignOut = async () => {
+    streamRef.current?.close();
+    streamRef.current = null;
+    setSending(false);
+    await signOut();
+  };
+
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
       <StatusBar style="dark" />
@@ -214,7 +224,7 @@ export default function ChatScreen() {
           <IconButton label="＋" accessibilityLabel="Nouvelle conversation" onPress={startNewConversation} />
           <IconButton label="☰" accessibilityLabel="Historique des conversations" onPress={() => setDrawerOpen(true)} variant="muted" />
           <ApiStatus status={apiStatus} />
-          <IconButton label="↗" accessibilityLabel="Se déconnecter" onPress={() => { void signOut(); }} variant="muted" />
+          <IconButton label="↗" accessibilityLabel="Se déconnecter" onPress={() => { void handleSignOut(); }} variant="muted" />
         </View>
       </View>
 
