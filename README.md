@@ -60,8 +60,8 @@ For a production application, use an Expo development build and EAS Build rather
 
 ## Development status
 
-The first mobile shell, typed design tokens, Better Auth email/password flow and native SSE chat client are present. The app uses the existing backend bearer-token contract; native tokens are stored with Expo SecureStore. The first chat view supports streaming, partial output, stop and error states.
+The first mobile shell, typed design tokens, Better Auth email/password flow and native SSE chat client are present. The app uses the existing backend bearer-token contract; native tokens are stored with Expo SecureStore. Assistant responses render GitHub-flavored Markdown and LaTeX with native components, including streaming updates.
 
-Conversation history/navigation, rich Markdown and LaTeX rendering, attachments, audio and subscriptions remain in the delivery plan.
+Conversation history navigation, attachments, audio and subscriptions remain in the delivery plan. A custom Expo development build is required for native Markdown/math and secure-storage modules; store-ready bundle identifiers and EAS project linking remain to be configured.
 
 See [docs/architecture.md](docs/architecture.md) for the client architecture, [docs/backend-contract.md](docs/backend-contract.md) for verified API contracts, and the implementation sequence.
