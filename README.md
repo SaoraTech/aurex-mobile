@@ -12,9 +12,9 @@ The application targets Android, iOS and (for development) web through Expo and 
 | UI runtime | React Native 0.88.1 |
 | React | 19.3.0 |
 | Web support | React Native Web 0.21.x |
-| Entry point | `index.js` → `App.js` |
+| Entry point | `index.js` → `App.tsx` |
 | UI foundation | React Native primitives, local Aurex design tokens |
-| Language baseline | TypeScript strict mode (gradual JS migration) |
+| Language baseline | TypeScript strict mode |
 
 The dependency versions are retained from the repository baseline. Add new native dependencies through `npx expo install` so Expo can select SDK-compatible versions.
 
@@ -60,8 +60,8 @@ For a production application, use an Expo development build and EAS Build rather
 
 ## Development status
 
-The first mobile shell and initial Aurex design tokens are now present. The welcome state and composer are presentation foundations; the composer is intentionally disabled until the deployed backend authentication and chat contracts are verified.
+The first mobile shell, typed design tokens, Better Auth email/password flow and native SSE chat client are present. The app uses the existing backend bearer-token contract; native tokens are stored with Expo SecureStore. The first chat view supports streaming, partial output, stop and error states.
 
-Authentication, navigation, live chat, streaming, mathematical rendering, attachments, audio and subscriptions are not yet implemented.
+Conversation history/navigation, rich Markdown and LaTeX rendering, attachments, audio and subscriptions remain in the delivery plan.
 
 See [docs/architecture.md](docs/architecture.md) for the client architecture, [docs/backend-contract.md](docs/backend-contract.md) for verified API contracts, and the implementation sequence.
