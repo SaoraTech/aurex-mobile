@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
   pressed: { backgroundColor: colors.surfaceAccent, borderColor: '#C7CCFF' },
   iconWrap: { width: 32, height: 32, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surfaceAccent, marginBottom: spacing.md },
   icon: { fontSize: 16 },
-  title: { color: colors.text, fontSize: typography.size.sm, fontWeight: typography.weight.semibold, marginBottom: spacing.xs },
+  title: { color: colors.text, fontSize: typography.size.sm, fontFamily: typography.semibold, fontWeight: typography.weight.semibold, marginBottom: spacing.xs },
   description: { color: colors.textSecondary, fontSize: typography.size.xs, lineHeight: 17 },
 });
