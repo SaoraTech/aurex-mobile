@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: aurex-mobile-ci-${{ github.ref }}
@@ -20,11 +20,8 @@ jobs:
     name: Expo SDK validation
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout development branch
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: chore/mobile-foundations
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,29 +29,8 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install dependencies
+      - name: Install locked dependencies
         run: npm ci
-
-      - name: Align packages with Expo SDK and developer tooling
-        run: |
-          npx expo install --fix
-          npx expo install typescript @types/react --dev
-          npx expo install eslint eslint-config-expo --dev
-          if ! git diff --quiet -- package.json package-lock.json; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add package.json package-lock.json
-            git commit -m "chore: align Expo SDK and developer tooling"
-            if ! git push origin HEAD:chore/mobile-foundations; then
-              git fetch origin chore/mobile-foundations
-              if git diff --quiet origin/chore/mobile-foundations -- package.json package-lock.json; then
-                git reset --hard origin/chore/mobile-foundations
-              else
-                echo "Concurrent dependency changes differ from this generated lockfile."
-                exit 1
-              fi
-            fi
-          fi
 
       - name: Check Expo package compatibility
         run: npx expo install --check
