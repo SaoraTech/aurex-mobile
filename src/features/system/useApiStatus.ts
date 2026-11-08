@@ -10,10 +10,7 @@ export function useApiStatus(): ApiStatusValue {
   );
 
   useEffect(() => {
-    if (!isApiConfigured) {
-      setStatus('not-configured');
-      return undefined;
-    }
+    if (!isApiConfigured) return undefined;
 
     const controller = new AbortController();
     let active = true;
