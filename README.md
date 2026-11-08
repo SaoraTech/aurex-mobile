@@ -14,6 +14,7 @@ The application targets Android, iOS and (for development) web through Expo and 
 | Web support | React Native Web 0.21.x |
 | Entry point | `index.js` → `App.js` |
 | UI foundation | React Native primitives, local Aurex design tokens |
+| Language baseline | TypeScript strict mode (gradual JS migration) |
 
 The dependency versions are retained from the repository baseline. Add new native dependencies through `npx expo install` so Expo can select SDK-compatible versions.
 
@@ -41,6 +42,8 @@ Useful commands:
 - `npm run check:deps` — verify Expo SDK package compatibility.
 - `npm run doctor` — run Expo Doctor.
 - `npm run export` — export Android, iOS and web bundles.
+- `npm run lint` — lint the project.
+- `npm run typecheck` — run strict TypeScript checks.
 
 GitHub Actions runs the dependency alignment, SDK compatibility, Expo Doctor and cross-platform export checks for this development branch and its pull request.
 
