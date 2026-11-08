@@ -30,7 +30,7 @@ jobs:
           cache: npm
 
       - name: Install locked dependencies
-        run: npm ci
+        run: npm ci --no-audit
 
       - name: Check Expo package compatibility
         run: npx expo install --check
