@@ -29,9 +29,9 @@
     "export": "expo export --platform all",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "build:development": "eas build --profile development --platform all",
-    "build:preview": "eas build --profile preview --platform all",
-    "build:production": "eas build --profile production --platform all"
+    "build:development": "npx eas-cli build --profile development --platform all",
+    "build:preview": "npx eas-cli build --profile preview --platform all",
+    "build:production": "npx eas-cli build --profile production --platform all"
   },
   "private": true,
   "devDependencies": {
