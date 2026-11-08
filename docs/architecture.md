@@ -10,12 +10,15 @@ The mobile application is a conversational mathematics assistant. It consumes th
 src/
   components/          Shared visual components
   core/
-    api/               Shared JSON API client and health request
+    api/               Typed JSON client, API contracts and health request
     config/            Runtime API configuration
   features/
     chat/
+      api/             Authenticated chat and conversation requests
       components/      Chat-specific presentation components
       ChatScreen.js    Initial chat home and application shell
+    system/
+      useApiStatus.ts  Backend readiness state
   theme/
     tokens.js          Aurex color, spacing, radius and typography tokens
 ```
