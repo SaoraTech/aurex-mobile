@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { BrandMark } from '../../components/BrandMark';
@@ -9,6 +9,7 @@ import { restoreBearerToken } from '../../core/auth/authApi';
 import type { ApiErrorEnvelope } from '../../core/api/apiTypes';
 import { useApiStatus } from '../system/useApiStatus';
 import { streamChatMessage } from './api/chatStream';
+import { listConversationMessages, listConversations } from './api/conversationsApi';
 import { PromptCard } from './components/PromptCard';
 import { Composer } from './components/Composer';
 import { MessageBubble } from './components/MessageBubble';
@@ -39,6 +40,49 @@ export default function ChatScreen() {
   const [conversationId, setConversationId] = useState<string | undefined>();
   const streamRef = useRef<{ close: () => void } | null>(null);
   const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+
+    const restoreLatestConversation = async () => {
+      const token = await restoreBearerToken();
+      if (!token) return;
+
+      const conversations = await listConversations(token, controller.signal);
+      const latest = conversations.find((item) => !item.archivedAt);
+      if (!latest) return;
+
+      const history = await listConversationMessages(latest.id, token, controller.signal);
+      if (!active) return;
+
+      setConversationId(latest.id);
+      setMessages(history.map((message) => ({
+        id: message.id,
+        role: message.role,
+        content: message.content,
+      })));
+    };
+
+    void restoreLatestConversation().catch(() => {
+      // Keep the welcome state available if history cannot be loaded.
+    });
+
+    return () => {
+      active = false;
+      controller.abort();
+      streamRef.current?.close();
+    };
+  }, []);
+
+  const startNewConversation = () => {
+    streamRef.current?.close();
+    streamRef.current = null;
+    setSending(false);
+    setConversationId(undefined);
+    setMessages([]);
+    setDraft('');
+  };
 
   const send = async () => {
     const content = draft.trim();
@@ -138,6 +182,7 @@ export default function ChatScreen() {
           </View>
         </View>
         <View style={styles.headerActions}>
+          <IconButton label="＋" accessibilityLabel="Nouvelle conversation" onPress={startNewConversation} />
           <ApiStatus status={apiStatus} />
           <IconButton label="↗" accessibilityLabel="Se déconnecter" onPress={() => { void signOut(); }} variant="muted" />
         </View>
