@@ -13,7 +13,7 @@ export function useApiStatus() {
 
     const controller = new AbortController();
     let active = true;
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), 30000);
 
     checkBackendReadiness(controller.signal)
       .then(() => {
