@@ -2,10 +2,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { colors, radius, spacing, typography } from '../theme/tokens';
 
 const labels = {
-  checking: 'Vérification du service',
-  ready: 'Service prêt',
-  unavailable: 'Service indisponible',
-  'not-configured': 'API non configurée',
+  checking: 'Connexion…',
+  ready: 'API prête',
+  unavailable: 'Hors ligne',
+  'not-configured': 'API à configurer',
 };
 
 export function ApiStatus({ status }) {
@@ -19,6 +19,7 @@ export function ApiStatus({ status }) {
     <View
       accessibilityLiveRegion="polite"
       accessibilityRole="text"
+      accessibilityLabel={labels[status] ?? labels.checking}
       style={styles.container}
     >
       <View style={[styles.dot, { backgroundColor: color }]} />
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   dot: { width: 7, height: 7, borderRadius: radius.pill },
   label: {
     color: colors.textSecondary,
-    fontSize: typography.size.xs,
+    fontSize: 10,
     fontWeight: typography.weight.medium,
   },
 });
