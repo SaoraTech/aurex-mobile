@@ -25,5 +25,5 @@ export function ApiStatus({ status }: ApiStatusProps) {
 const styles = StyleSheet.create({
   container: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, alignSelf: 'flex-start', paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: radius.pill, backgroundColor: colors.surfaceMuted },
   dot: { width: 7, height: 7, borderRadius: radius.pill },
-  label: { color: colors.textSecondary, fontSize: 10, fontWeight: typography.weight.medium },
+  label: { color: colors.textSecondary, fontSize: 10, fontFamily: typography.medium, fontWeight: typography.weight.medium },
 });
