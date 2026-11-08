@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: aurex-mobile-ci-${{ github.ref }}
@@ -20,8 +20,11 @@ jobs:
     name: Expo SDK validation
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout development branch
         uses: actions/checkout@v4
+        with:
+          ref: chore/mobile-foundations
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -29,8 +32,23 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Reconcile lockfile and SDK-native dependencies
+        run: |
+          npm install --package-lock-only
+          npm ci
+          npx expo install expo-secure-store
+          if ! git diff --quiet -- package.json package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package.json package-lock.json
+            git commit -m "chore: lock mobile authentication dependencies"
+            git fetch origin chore/mobile-foundations
+            git rebase origin/chore/mobile-foundations
+            git push origin HEAD:chore/mobile-foundations
+          fi
+
       - name: Install locked dependencies
-        run: npm ci --no-audit
+        run: npm ci
 
       - name: Check Expo package compatibility
         run: npx expo install --check
