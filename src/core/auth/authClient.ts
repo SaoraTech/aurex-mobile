@@ -7,7 +7,7 @@ export const authClient = createAuthClient({
   fetchOptions: {
     auth: {
       type: 'Bearer',
-      token: getCachedBearerToken,
+      token: () => getCachedBearerToken() ?? '',
     },
   },
 });
