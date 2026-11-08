@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ComponentRef } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { BrandMark } from '../../components/BrandMark';
@@ -39,7 +39,7 @@ export default function ChatScreen() {
   const [sending, setSending] = useState(false);
   const [conversationId, setConversationId] = useState<string | undefined>();
   const streamRef = useRef<{ close: () => void } | null>(null);
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
 
   useEffect(() => {
     const controller = new AbortController();
