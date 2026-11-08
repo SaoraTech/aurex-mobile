@@ -1,5 +1,5 @@
-import ChatScreen from './src/features/chat/ChatScreen';
+import AppRoot from './src/AppRoot';
 
 export default function App() {
-  return <ChatScreen />;
+  return <AppRoot />;
 }
