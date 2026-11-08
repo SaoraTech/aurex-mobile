@@ -112,10 +112,10 @@ export function MessageBubble({ role, content, pending = false, error, onCopy, o
         {pending && content.length > 0 ? <Text style={styles.pending}>Génération en cours</Text> : null}
         {!isUser && !pending && content.length > 0 ? (
           <View style={styles.actions}>
-            <Pressable accessibilityRole="button" onPress={async () => { await onCopy?.(); setCopied(true); }} style={styles.action}>
+            <Pressable accessibilityRole="button" onPress={async () => { try { await onCopy?.(); setCopied(true); } catch { /* Clipboard may be unavailable on the current platform. */ } }} style={styles.action}>
               <Text style={styles.actionText}>{copied ? '✓ Copié' : 'Copier'}</Text>
             </Pressable>
-            <Pressable accessibilityRole="button" onPress={() => { void onShare?.(); }} style={styles.action}>
+            <Pressable accessibilityRole="button" onPress={async () => { try { await onShare?.(); } catch { /* The native share sheet can be dismissed or unavailable. */ } }} style={styles.action}>
               <Text style={styles.actionText}>Partager</Text>
             </Pressable>
           </View>
