@@ -6,13 +6,14 @@ import { ApiStatus } from '../../components/ApiStatus';
 import { IconButton } from '../../components/IconButton';
 import { useAuth } from '../../core/auth/AuthProvider';
 import { restoreBearerToken } from '../../core/auth/authApi';
-import type { ApiErrorEnvelope } from '../../core/api/apiTypes';
+import type { ApiErrorEnvelope, ConversationRecord } from '../../core/api/apiTypes';
 import { useApiStatus } from '../system/useApiStatus';
 import { streamChatMessage } from './api/chatStream';
 import { listConversationMessages, listConversations } from './api/conversationsApi';
 import { PromptCard } from './components/PromptCard';
 import { Composer } from './components/Composer';
 import { MessageBubble } from './components/MessageBubble';
+import { ConversationDrawer } from './components/ConversationDrawer';
 import type { MessageBubbleProps } from './components/MessageBubble';
 import { colors, radius, spacing, typography } from '../../theme/tokens';
 
@@ -38,6 +39,8 @@ export default function ChatScreen() {
   const [messages, setMessages] = useState<UiMessage[]>([]);
   const [sending, setSending] = useState(false);
   const [conversationId, setConversationId] = useState<string | undefined>();
+  const [conversations, setConversations] = useState<ConversationRecord[]>([]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const streamRef = useRef<{ close: () => void } | null>(null);
   const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
 
@@ -49,8 +52,10 @@ export default function ChatScreen() {
       const token = await restoreBearerToken();
       if (!token) return;
 
-      const conversations = await listConversations(token, controller.signal);
-      const latest = conversations.find((item) => !item.archivedAt);
+      const items = await listConversations(token, controller.signal);
+      if (!active) return;
+      setConversations(items);
+      const latest = items.find((item) => !item.archivedAt);
       if (!latest) return;
 
       const history = await listConversationMessages(latest.id, token, controller.signal);
@@ -76,12 +81,35 @@ export default function ChatScreen() {
   }, []);
 
   const startNewConversation = () => {
+    setDrawerOpen(false);
     streamRef.current?.close();
     streamRef.current = null;
     setSending(false);
     setConversationId(undefined);
     setMessages([]);
     setDraft('');
+  };
+
+  const selectConversation = async (id: string) => {
+    try {
+      const token = await restoreBearerToken();
+      if (!token) return;
+      const history = await listConversationMessages(id, token);
+      setConversationId(id);
+      setMessages(history.map((message) => ({
+        id: message.id,
+        role: message.role,
+        content: message.content,
+      })));
+      setDraft('');
+    } catch {
+      setMessages((current) => [...current, {
+        id: `history-${Date.now()}`,
+        role: 'assistant',
+        content: '',
+        error: 'Impossible de charger cette conversation. Réessayez.',
+      }]);
+    }
   };
 
   const send = async () => {
@@ -124,6 +152,7 @@ export default function ChatScreen() {
           },
           onDone: (result) => {
             setConversationId(result.conversationId);
+            void listConversations(token).then(setConversations).catch(() => undefined);
             setMessages((current) => current.map((message) =>
               message.id === assistantId
                 ? { ...message, content: result.message.content, pending: false }
@@ -183,10 +212,19 @@ export default function ChatScreen() {
         </View>
         <View style={styles.headerActions}>
           <IconButton label="＋" accessibilityLabel="Nouvelle conversation" onPress={startNewConversation} />
+          <IconButton label="☰" accessibilityLabel="Historique des conversations" onPress={() => setDrawerOpen(true)} variant="muted" />
           <ApiStatus status={apiStatus} />
           <IconButton label="↗" accessibilityLabel="Se déconnecter" onPress={() => { void signOut(); }} variant="muted" />
         </View>
       </View>
+
+      <ConversationDrawer
+        visible={drawerOpen}
+        conversations={conversations}
+        onClose={() => setDrawerOpen(false)}
+        onNewConversation={startNewConversation}
+        onSelectConversation={(id) => { void selectConversation(id); }}
+      />
 
       <ScrollView
         ref={scrollRef}
