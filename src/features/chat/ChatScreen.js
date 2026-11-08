@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { BrandMark } from '../../components/BrandMark';
@@ -15,8 +14,6 @@ const prompts = [
 ];
 
 export default function ChatScreen() {
-  const [draft, setDraft] = useState('');
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -64,7 +61,6 @@ export default function ChatScreen() {
               key={prompt.title}
               description={prompt.description}
               icon={prompt.icon}
-              onPress={() => setDraft(prompt.title + ' : ')}
               title={prompt.title}
             />
           ))}
@@ -81,10 +77,9 @@ export default function ChatScreen() {
       <View style={styles.composerArea}>
         <Composer
           disabled
-          onChangeText={setDraft}
           onSend={() => {}}
           placeholder="La connexion à Aurex sera activée ici…"
-          value={draft}
+          value=""
         />
         <Text style={styles.footerText}>Aurex · Saora</Text>
       </View>
