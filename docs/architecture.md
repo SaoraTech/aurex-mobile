@@ -62,6 +62,10 @@ The approved Aurex identity is the source of truth: blue/indigo/cyan/violet pale
 
 Expo Router, state-management libraries, animation/gesture packages, list virtualization, persistence libraries and UI kits are not dependencies yet. Select them only when the relevant feature is designed and their SDK 58 compatibility is checked.
 
+## Quality gates
+
+A change is not considered complete until the Expo SDK compatibility check, ESLint, TypeScript typecheck, Expo Doctor, production dependency audit and Android/iOS/web bundle export pass in CI. A cancelled or pending workflow is not a successful validation.
+
 ## Documentation discipline
 
 Use Context7 with the exact SDK/library version before coding against Expo, React Native, React, navigation, storage, networking or UI packages. Prefer the versioned Expo SDK 58 documentation over unversioned examples.
