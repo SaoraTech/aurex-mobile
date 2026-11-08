@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 
 const TOKEN_KEY = 'aurex.auth.bearer.v1';
@@ -11,7 +12,10 @@ export function getCachedBearerToken(): string | null {
 
 export async function hydrateBearerToken(): Promise<string | null> {
   if (!hydration) {
-    hydration = SecureStore.getItemAsync(TOKEN_KEY).then((token) => {
+    hydration = (Platform.OS === 'web'
+      ? Promise.resolve(null)
+      : SecureStore.getItemAsync(TOKEN_KEY)
+    ).then((token) => {
       cachedToken = token;
       return token;
     }).catch((error: unknown) => {
@@ -24,13 +28,17 @@ export async function hydrateBearerToken(): Promise<string | null> {
 }
 
 export async function persistBearerToken(token: string): Promise<void> {
-  await SecureStore.setItemAsync(TOKEN_KEY, token);
+  if (Platform.OS !== 'web') {
+    await SecureStore.setItemAsync(TOKEN_KEY, token);
+  }
   cachedToken = token;
   hydration = Promise.resolve(token);
 }
 
 export async function clearBearerToken(): Promise<void> {
-  await SecureStore.deleteItemAsync(TOKEN_KEY);
+  if (Platform.OS !== 'web') {
+    await SecureStore.deleteItemAsync(TOKEN_KEY);
+  }
   cachedToken = null;
   hydration = Promise.resolve(null);
 }
