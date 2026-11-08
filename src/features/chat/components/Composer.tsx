@@ -55,8 +55,8 @@ export function Composer({
 const styles = StyleSheet.create({
   container: { paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: spacing.sm, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, borderRadius: radius.xl, shadowColor: '#20234A', shadowOpacity: 0.06, shadowRadius: 18, shadowOffset: { width: 0, height: 6 }, elevation: 2 },
   inputRow: { flexDirection: 'row', alignItems: 'flex-end', gap: spacing.md },
-  input: { flex: 1, minHeight: 42, maxHeight: 116, paddingTop: spacing.sm, paddingBottom: spacing.sm, color: colors.text, fontSize: typography.size.md, lineHeight: 22, textAlignVertical: 'top' },
+  input: { flex: 1, minHeight: 42, maxHeight: 116, paddingTop: spacing.sm, paddingBottom: spacing.sm, color: colors.text, fontSize: typography.size.md, fontFamily: typography.family, lineHeight: 22, textAlignVertical: 'top' },
   footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: spacing.sm, paddingTop: spacing.sm, borderTopWidth: 1, borderTopColor: colors.border },
-  hint: { flex: 1, color: colors.textMuted, fontSize: 10, lineHeight: 14 },
-  shortcut: { color: colors.textMuted, fontSize: 9, letterSpacing: 1, fontWeight: typography.weight.semibold },
+  hint: { flex: 1, color: colors.textMuted, fontSize: 10, fontFamily: typography.family, lineHeight: 14 },
+  shortcut: { color: colors.textMuted, fontSize: 9, letterSpacing: 1, fontFamily: typography.semibold, fontWeight: typography.weight.semibold },
 });
