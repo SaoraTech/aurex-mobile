@@ -1,1 +1,55 @@
-{"name":"aurex","version":"1.0.0","main":"index.js","dependencies":{"expo":"~58.0.21","expo-status-bar":"~58.0.4","react":"19.3.0","react-dom":"19.3.0","react-native":"0.88.1","react-native-web":"^0.21.2"},"scripts":{"start":"expo start","android":"expo start --android","ios":"expo start --ios","web":"expo start --web"},"private":true}
+{
+  "name": "aurex",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@expo-google-fonts/inter": "^0.4.2",
+    "@expo-google-fonts/jetbrains-mono": "^0.4.1",
+    "better-auth": "1.7.7",
+    "expo": "~58.0.23",
+    "expo-clipboard": "~58.0.4",
+    "expo-dev-client": "~58.0.18",
+    "expo-font": "~58.0.11",
+    "expo-secure-store": "~58.0.2",
+    "expo-splash-screen": "~58.0.13",
+    "expo-status-bar": "~58.0.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-enriched-markdown": "^1.1.1",
+    "react-native-sse": "1.2.1",
+    "react-native-web": "^0.21.2"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "check:deps": "expo install --check",
+    "doctor": "npx expo-doctor",
+    "export": "expo export --platform all",
+    "lint": "expo lint",
+    "typecheck": "tsc --noEmit",
+    "build:development": "npx eas-cli build --profile development --platform all",
+    "build:preview": "npx eas-cli build --profile preview --platform all",
+    "build:production": "npx eas-cli build --profile production --platform all"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/react": "~19.3.0",
+    "eslint": "^9.39.5",
+    "eslint-config-expo": "~58.0.4",
+    "typescript": "~6.0.3"
+  },
+  "enriched-markdown": {
+    "enableCodeHighlight": true,
+    "enableMath": true,
+    "codeHighlightLanguages": [
+      "javascript",
+      "typescript",
+      "python",
+      "json",
+      "bash"
+    ]
+  }
+}

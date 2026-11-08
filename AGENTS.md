@@ -1,41 +1,56 @@
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, accessibility and cross-platform compatibility.
 
-## Expo has changed — do not trust your training data
+## Documentation and Context7
 
-Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
+- Before using or adding a library, framework API, SDK, CLI or cloud service, resolve its exact library/version in Context7 and query the relevant current documentation.
+- For Expo APIs, read the documentation for the installed SDK major version and verify the package compatibility table.
+- Do not generate API usage from memory when versioned documentation is available.
+- Use `npx expo install <package>` for Expo-managed dependencies so the CLI selects SDK-compatible versions.
+- Do not add dependencies merely for convenience; justify each native dependency and verify its Android/iOS support.
 
-1. Read the major version of the `expo` package in `package.json`.
-2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
-3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+## Expo SDK workflow
 
-## Commands
+1. Read the installed `expo` version from `package.json`.
+2. Use the matching versioned Expo documentation: `https://docs.expo.dev/versions/v58.0.0/`.
+3. For SDK-specific corrections, follow the versioned Expo docs and the package compatibility checks.
 
-Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
+Useful commands:
 
 ```bash
-npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
-npx expo start              # start the dev server
-npx expo lint               # lint
-npx tsc --noEmit            # typecheck
-npx expo-doctor             # diagnose dependency and config issues
-npx expo install --fix      # fix incompatible package versions
+npx expo start
+npx expo lint
+npx tsc --noEmit
+npx expo-doctor
+npx expo install --check
+npx expo install --fix
 ```
 
-Run lint and typecheck before declaring any task done.
+Run lint, typecheck, Expo Doctor and platform bundle exports before declaring an implementation complete.
 
-## Navigation & Routing
+## TypeScript
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
-- Docs: https://docs.expo.dev/router/introduction.md
+- Keep TypeScript strict.
+- Avoid `any`; define API contracts and use unknown for untrusted payloads.
+- Keep JavaScript and TypeScript interoperability during the gradual migration.
+- Never put credentials or private secrets in `EXPO_PUBLIC_*` variables.
 
-## Building with EAS
+## Navigation and architecture
 
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
-Docs: https://docs.expo.dev/eas/index.md
+- Do not assume Expo Router or another navigation library has been selected. The current client is a single-screen foundation.
+- When navigation is designed, compare the appropriate options, resolve their documentation in Context7, verify Expo SDK compatibility, then add the selected dependency.
+- Keep route/screen components separate from shared components, feature logic and core services.
+- Feature UI must call typed API/service functions rather than calling fetch directly.
 
-## Rules
+## Backend integration
 
-- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
-- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+- The mobile app consumes the existing Aurex backend; it does not duplicate server-side business rules.
+- Authentication/session handling must follow the deployed Better Auth contract and use platform-appropriate secure storage.
+- Never expose LLM, speech, database, billing or payment-provider credentials in the client.
+- Do not add a model selector; model selection and entitlements are server-side.
+- Treat Markdown, LaTeX, attachments and streamed model output as untrusted content.
+
+## Native projects and builds
+
+- If `ios/` and `android/` directories do not exist, treat them as generated by Expo Continuous Native Generation. Do not create or edit them manually.
+- Use Expo development builds for native modules and EAS Build for cloud builds.
+- Expo Go is a development convenience, not the production runtime.

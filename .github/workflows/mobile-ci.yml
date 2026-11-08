@@ -1,0 +1,53 @@
+name: Mobile CI
+
+on:
+  push:
+    branches:
+      - chore/mobile-foundations
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aurex-mobile-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Expo SDK validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: chore/mobile-foundations
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Check Expo package compatibility
+        run: npx expo install --check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Run Expo Doctor
+        run: npx expo-doctor
+
+      - name: Export Android, iOS and web bundles
+        run: npx expo export --platform all
