@@ -38,6 +38,11 @@ Useful commands:
 - `npm run android` — start the Android development target.
 - `npm run ios` — start the iOS development target (macOS with Xcode required).
 - `npm run web` — start the web development target.
+- `npm run check:deps` — verify Expo SDK package compatibility.
+- `npm run doctor` — run Expo Doctor.
+- `npm run export` — export Android, iOS and web bundles.
+
+GitHub Actions runs the dependency alignment, SDK compatibility, Expo Doctor and cross-platform export checks for this development branch and its pull request.
 
 For a production application, use an Expo development build and EAS Build rather than relying on Expo Go as the final runtime.
 
