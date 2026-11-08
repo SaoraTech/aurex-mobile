@@ -13,12 +13,13 @@ The application targets Android, iOS and (for development) web through Expo and 
 | React | 19.3.0 |
 | Web support | React Native Web 0.21.x |
 | Entry point | `index.js` → `App.js` |
+| UI foundation | React Native primitives, local Aurex design tokens |
 
-The versions currently committed in `package.json` match Expo SDK 58's published compatibility matrix. Use Node.js **22.13 or newer** (or a supported newer even-numbered release) for the SDK 58 toolchain.
+The dependency versions are retained from the repository baseline. Add new native dependencies through `npx expo install` so Expo can select SDK-compatible versions.
 
 ## Getting started
 
-1. Install a supported Node.js version.
+1. Install Node.js **22.13.0 or newer**.
 2. Install dependencies:
 
    ```bash
@@ -47,9 +48,12 @@ For a production application, use an Expo development build and EAS Build rather
 - Isolate backend communication from presentation components.
 - Keep secrets out of the mobile bundle. `EXPO_PUBLIC_*` variables are public at runtime.
 - Do not silently add backend providers, mathematical engines, or product behavior without an explicit architecture decision.
+- Use Context7 and versioned Expo documentation before introducing framework APIs or dependencies.
 
 ## Development status
 
-This repository is at its foundation stage. The current `App.js` is still the Expo starter screen. Navigation, the Aurex design system, authentication, chat, streaming, mathematical rendering, attachments, and audio are not yet implemented.
+The first mobile shell and initial Aurex design tokens are now present. The welcome state and composer are presentation foundations; the composer is intentionally disabled until the deployed backend authentication and chat contracts are verified.
 
-See [docs/architecture.md](docs/architecture.md) for the initial client architecture and implementation sequence.
+Authentication, navigation, live chat, streaming, mathematical rendering, attachments, audio and subscriptions are not yet implemented.
+
+See [docs/architecture.md](docs/architecture.md) for the client architecture and implementation sequence.
