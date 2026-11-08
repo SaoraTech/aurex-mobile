@@ -38,12 +38,14 @@ const markdownStyle = {
   h2: {
     color: colors.text,
     fontSize: typography.size.lg,
+    fontFamily: typography.bold,
     fontWeight: 'bold' as const,
     marginBottom: spacing.sm,
   },
   h3: {
     color: colors.text,
     fontSize: typography.size.md,
+    fontFamily: typography.bold,
     fontWeight: 'bold' as const,
     marginBottom: spacing.sm,
   },
