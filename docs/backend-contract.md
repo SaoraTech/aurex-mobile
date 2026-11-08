@@ -13,8 +13,10 @@ This document records the current contracts inspected in `SaoraTech/aurex-back`.
 
 - Provider keys, database credentials and payment credentials stay on the backend.
 - Protected REST routes require an authenticated user.
-- The bearer plugin is enabled by the backend. The mobile client must use the actual Better Auth response/session contract and secure token storage; do not infer a token field or sign-in endpoint from the route prefix alone.
-- Authentication UI and token persistence remain unimplemented until Better Auth's current mobile-client documentation and the backend response shape have been verified.
+- The backend's Better Auth bearer plugin returns the session token in the `set-auth-token` response header after successful sign-in/sign-up.
+- The mobile client uses Better Auth's email/password client and sends the stored token in `Authorization: Bearer <token>` for subsequent auth and REST requests.
+- On Android and iOS, the token is persisted with Expo SecureStore (Android encrypted preferences / iOS Keychain). On web development, it remains memory-only; there is no claim of secure browser persistence.
+- The client uses Better Auth's default `/api/auth` base path. The Expo-specific server plugin is not assumed to be enabled on the backend.
 
 ## Conversations
 
