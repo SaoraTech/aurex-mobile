@@ -44,28 +44,29 @@ export default function ChatScreen() {
     const content = draft.trim();
     if (!content || sending) return;
 
-    const token = await restoreBearerToken();
-    if (!token) {
-      setMessages((current) => [...current, {
-        id: `auth-${Date.now()}`,
-        role: 'assistant',
-        content: '',
-        error: 'Votre session a expiré. Reconnectez-vous pour continuer.',
-      }]);
-      return;
-    }
-
-    const userId = `user-${Date.now()}`;
-    const assistantId = `assistant-${Date.now()}`;
-    setMessages((current) => [
-      ...current,
-      { id: userId, role: 'user', content },
-      { id: assistantId, role: 'assistant', content: '', pending: true },
-    ]);
-    setDraft('');
     setSending(true);
-
     try {
+      const token = await restoreBearerToken();
+      if (!token) {
+        setMessages((current) => [...current, {
+          id: `auth-${Date.now()}`,
+          role: 'assistant',
+          content: '',
+          error: 'Votre session a expiré. Reconnectez-vous pour continuer.',
+        }]);
+        setSending(false);
+        return;
+      }
+
+      const userId = `user-${Date.now()}`;
+      const assistantId = `assistant-${Date.now()}`;
+      setMessages((current) => [
+        ...current,
+        { id: userId, role: 'user', content },
+        { id: assistantId, role: 'assistant', content: '', pending: true },
+      ]);
+      setDraft('');
+
       streamRef.current = streamChatMessage(
         { conversationId, content, webSearch: 'off' },
         token,
