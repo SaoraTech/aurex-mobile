@@ -27,8 +27,12 @@ export const radius = {
 } as const;
 
 export const typography = {
-  family: 'Inter',
-  mono: 'JetBrains Mono',
+  family: 'Inter_400Regular',
+  medium: 'Inter_500Medium',
+  semibold: 'Inter_600SemiBold',
+  bold: 'Inter_700Bold',
+  mono: 'JetBrainsMono_400Regular',
+  monoMedium: 'JetBrainsMono_500Medium',
   size: { xs: 11, sm: 13, md: 15, lg: 17, xl: 21, display: 29 },
   weight: { regular: '400', medium: '500', semibold: '600', bold: '700' },
 } as const;
