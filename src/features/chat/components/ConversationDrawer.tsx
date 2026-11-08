@@ -9,8 +9,8 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import type { ConversationRecord } from '../../core/api/apiTypes';
-import { colors, radius, spacing, typography } from '../../theme/tokens';
+import type { ConversationRecord } from '../../../core/api/apiTypes';
+import { colors, radius, spacing, typography } from '../../../theme/tokens';
 
 type ConversationDrawerProps = {
   visible: boolean;
