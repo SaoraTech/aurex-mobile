@@ -51,3 +51,25 @@ export type ChatStreamEvent =
   | { event: 'delta'; data: { delta: string } }
   | { event: 'done'; data: SendChatMessageResult }
   | { event: 'error'; data: ApiErrorEnvelope };
+
+export type ConversationSubject = 'calculus' | 'algebra' | 'geometry' | 'statistics' | 'general';
+
+export interface ConversationRecord {
+  id: string;
+  title: string;
+  subject: ConversationSubject;
+  createdAt: string;
+  updatedAt: string;
+  archivedAt?: string | null;
+  [key: string]: unknown;
+}
+
+export interface CreateConversationInput {
+  title?: string;
+  subject?: ConversationSubject;
+}
+
+export interface GenerationStatus {
+  requestId: string;
+  active: boolean;
+}
