@@ -9,6 +9,9 @@ The mobile application is a conversational mathematics assistant. It consumes th
 ```text
 src/
   components/          Shared visual components
+  core/
+    api/               Shared JSON API client and health request
+    config/            Runtime API configuration
   features/
     chat/
       components/      Chat-specific presentation components
@@ -46,7 +49,7 @@ The approved Aurex identity is the source of truth: blue/indigo/cyan/violet pale
 1. **Repository foundations:** repository hygiene, SDK compatibility, environment conventions and architecture documentation.
 2. **Design system and shell:** tokens, reusable components, welcome state, responsive layout and accessibility.
 3. **Engineering baseline:** TypeScript/tooling setup, typed app entry and quality checks, after lockfile generation is available.
-4. **Backend contract audit:** verify authentication, chat, streaming, file and billing contracts against the deployed backend.
+4. **Backend integration:** implement Better Auth session handling and the verified chat/SSE contract; backend route inventory is recorded in [backend-contract.md](backend-contract.md).
 5. **Authentication:** secure session lifecycle and auth screens.
 6. **Chat experience:** conversation history, composer, message states, Markdown/LaTeX and streaming.
 7. **Extended capabilities:** attachments, audio, subscription/account surfaces as supported by backend contracts.
