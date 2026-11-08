@@ -45,7 +45,7 @@ Useful commands:
 - `npm run lint` — lint the project.
 - `npm run typecheck` — run strict TypeScript checks.
 
-GitHub Actions runs the dependency alignment, SDK compatibility, Expo Doctor and cross-platform export checks for this development branch and its pull request.
+GitHub Actions runs the locked dependency install, SDK compatibility, ESLint, TypeScript, production dependency audit, Expo Doctor and cross-platform export checks for this development branch and its pull request.
 
 For a production application, use an Expo development build and EAS Build rather than relying on Expo Go as the final runtime.
 
