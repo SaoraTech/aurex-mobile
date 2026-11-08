@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
   muted: { backgroundColor: colors.surfaceMuted, borderColor: 'transparent' },
   pressed: { backgroundColor: colors.surfaceAccent, transform: [{ scale: 0.97 }] },
   disabled: { opacity: 0.45 },
-  label: { color: colors.text, fontSize: typography.size.lg, fontWeight: typography.weight.medium },
+  label: { color: colors.text, fontSize: typography.size.lg, fontFamily: typography.medium, fontWeight: typography.weight.medium },
   mutedLabel: { color: colors.textSecondary },
 });
