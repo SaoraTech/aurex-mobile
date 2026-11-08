@@ -44,6 +44,8 @@ export default function ChatScreen() {
     const content = draft.trim();
     if (!content || sending) return;
 
+    const userId = `user-${Date.now()}`;
+    const assistantId = `assistant-${Date.now()}`;
     setSending(true);
     try {
       const token = await restoreBearerToken();
@@ -58,8 +60,6 @@ export default function ChatScreen() {
         return;
       }
 
-      const userId = `user-${Date.now()}`;
-      const assistantId = `assistant-${Date.now()}`;
       setMessages((current) => [
         ...current,
         { id: userId, role: 'user', content },
@@ -100,11 +100,12 @@ export default function ChatScreen() {
         },
       );
     } catch (error) {
-      setMessages((current) => current.map((message) =>
-        message.id === assistantId
-          ? { ...message, pending: false, error: error instanceof Error ? error.message : 'Connexion impossible.' }
-          : message,
-      ));
+      const message = error instanceof Error ? error.message : 'Connexion impossible.';
+      setMessages((current) => current.some((item) => item.id === assistantId)
+        ? current.map((item) => item.id === assistantId
+          ? { ...item, pending: false, error: message }
+          : item)
+        : [...current, { id: assistantId, role: 'assistant', content: '', error: message }]);
       setSending(false);
       streamRef.current = null;
     }
