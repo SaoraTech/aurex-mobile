@@ -6,18 +6,28 @@ type ComposerProps = {
   value: string;
   onChangeText?: (value: string) => void;
   onSend?: () => void;
+  onStop?: () => void;
   disabled?: boolean;
+  sending?: boolean;
   placeholder?: string;
 };
 
-export function Composer({ value, onChangeText, onSend, disabled = false, placeholder = 'Posez votre question de mathématiques…' }: ComposerProps) {
-  const canSend = value.trim().length > 0 && !disabled;
+export function Composer({
+  value,
+  onChangeText,
+  onSend,
+  onStop,
+  disabled = false,
+  sending = false,
+  placeholder = 'Posez votre question de mathématiques…',
+}: ComposerProps) {
+  const canSend = value.trim().length > 0 && !disabled && !sending;
   return (
     <View style={styles.container}>
       <View style={styles.inputRow}>
         <TextInput
           accessibilityLabel="Votre message"
-          editable={!disabled}
+          editable={!disabled && !sending}
           multiline
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -26,7 +36,13 @@ export function Composer({ value, onChangeText, onSend, disabled = false, placeh
           style={styles.input}
           value={value}
         />
-        <IconButton accessibilityLabel="Envoyer le message" disabled={!canSend} label="↑" onPress={onSend} variant="muted" />
+        <IconButton
+          accessibilityLabel={sending ? 'Arrêter la réponse' : 'Envoyer le message'}
+          disabled={sending ? false : !canSend}
+          label={sending ? '■' : '↑'}
+          onPress={sending ? onStop : onSend}
+          variant="muted"
+        />
       </View>
       <View style={styles.footer}>
         <Text style={styles.hint}>Aurex peut faire des erreurs. Vérifiez les résultats importants.</Text>
