@@ -16,7 +16,7 @@ The application targets Android, iOS and (for development) web through Expo and 
 | UI foundation | React Native primitives, local Aurex design tokens |
 | Language baseline | TypeScript strict mode |
 
-The dependency versions are retained from the repository baseline. Add new native dependencies through `npx expo install` so Expo can select SDK-compatible versions.
+The Expo SDK, React and React Native baseline is kept aligned with the SDK 58 compatibility table. Better Auth handles the existing backend bearer flow; Expo SecureStore and the SSE transport are installed through the SDK-aware dependency workflow. Add new native dependencies through `npx expo install` so Expo can select SDK-compatible versions.
 
 ## Getting started
 
