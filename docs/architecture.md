@@ -62,7 +62,7 @@ Feature UI must not call the backend directly. Screens and components should dep
 - Better Auth uses the backend's bearer plugin; native bearer tokens are persisted in Expo SecureStore. Web development keeps the token in memory only.
 - The UI must not expose a model selector.
 - The chat stream uses the backend's `delta`, `done` and `error` events. A client disconnect closes the stream and lets the backend stop generation.
-- Mathematical answers must eventually be rendered safely, including Markdown and LaTeX, without evaluating model output as code.
+- Mathematical answers are rendered with the native Enriched Markdown component and RaTeX math support; model output remains untrusted and links are restricted to HTTP(S).
 - Do not simulate assistant replies or claim a request was sent when the backend is not connected.
 
 ## Visual direction
@@ -75,7 +75,7 @@ The approved Aurex identity is the source of truth: blue/indigo/cyan/violet pale
 2. **Engineering baseline:** strict TypeScript, ESLint, typecheck scripts and typed API contracts.
 3. **Design system and shell:** tokens, reusable components, welcome state, responsive layout and accessibility.
 4. **Authentication:** Better Auth email/password sign-in and registration, bearer-token persistence and session restoration.
-5. **Chat experience:** streamed responses, conversation history, message states, Markdown/LaTeX and robust cancellation.
+5. **Chat experience:** streamed responses, latest-conversation restoration, message states, native Markdown/LaTeX and cancellation. Conversation list navigation remains to be completed.
 6. **Extended capabilities:** attachments, audio, subscription/account surfaces as supported by backend contracts.
 7. **Validation and release:** device testing, accessibility, performance, security review and Android/iOS builds.
 
