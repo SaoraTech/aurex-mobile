@@ -1,4 +1,5 @@
-import { Linking, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import { colors, radius, spacing, typography } from '../../../theme/tokens';
 
@@ -7,6 +8,8 @@ export type MessageBubbleProps = {
   content: string;
   pending?: boolean;
   error?: string | null;
+  onCopy?: () => void | Promise<void>;
+  onShare?: () => void | Promise<void>;
 };
 
 function openSafeLink(url: string) {
@@ -84,7 +87,8 @@ const markdownStyle = {
   },
 };
 
-export function MessageBubble({ role, content, pending = false, error }: MessageBubbleProps) {
+export function MessageBubble({ role, content, pending = false, error, onCopy, onShare }: MessageBubbleProps) {
+  const [copied, setCopied] = useState(false);
   const isUser = role === 'user';
   const renderedContent = content || (pending ? 'Réflexion en cours…' : '');
 
@@ -106,6 +110,16 @@ export function MessageBubble({ role, content, pending = false, error }: Message
         )}
         {error ? <Text style={styles.error}>{error}</Text> : null}
         {pending && content.length > 0 ? <Text style={styles.pending}>Génération en cours</Text> : null}
+        {!isUser && !pending && content.length > 0 ? (
+          <View style={styles.actions}>
+            <Pressable accessibilityRole="button" onPress={async () => { await onCopy?.(); setCopied(true); }} style={styles.action}>
+              <Text style={styles.actionText}>{copied ? '✓ Copié' : 'Copier'}</Text>
+            </Pressable>
+            <Pressable accessibilityRole="button" onPress={() => { void onShare?.(); }} style={styles.action}>
+              <Text style={styles.actionText}>Partager</Text>
+            </Pressable>
+          </View>
+        ) : null}
       </View>
     </View>
   );
@@ -123,4 +137,7 @@ const styles = StyleSheet.create({
   userContent: { color: colors.white },
   error: { color: colors.danger, fontSize: typography.size.xs, fontFamily: typography.family, marginTop: spacing.sm },
   pending: { color: colors.textMuted, fontSize: 10, fontFamily: typography.family, marginTop: spacing.sm },
+  actions: { flexDirection: 'row', alignItems: 'center', gap: spacing.lg, marginTop: spacing.md, paddingTop: spacing.sm, borderTopWidth: 1, borderTopColor: colors.border },
+  action: { paddingVertical: spacing.xs, paddingRight: spacing.sm },
+  actionText: { color: colors.primary, fontSize: typography.size.xs, fontFamily: typography.medium },
 });
