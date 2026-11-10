@@ -10,7 +10,7 @@ import { colors, radius, spacing, typography } from '../../theme/tokens';
 type Props = { onSignIn: () => void; onSignUp: () => void };
 
 export default function GuestChatScreen({ onSignIn, onSignUp }: Props) {
-  const { transcript, quota, status, streamingText, error, sendMessage, stopGeneration, revokeSession } = useGuestSession();
+  const { transcript, quota, status, streamingText, error, sendMessage, stopGeneration } = useGuestSession();
   const [draft, setDraft] = useState('');
   const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
   const sending = status === 'sending';
