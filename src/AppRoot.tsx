@@ -11,7 +11,7 @@ import AccessScreen from './features/onboarding/AccessScreen';
 import WelcomeScreen from './features/onboarding/WelcomeScreen';
 import AuthScreen from './features/auth/AuthScreen';
 import ChatScreen from './features/chat/ChatScreen';
-import { colors, spacing, typography, radius } from './theme/tokens';
+import { colors, spacing, typography } from './theme/tokens';
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -21,6 +21,7 @@ type AuthMode = 'signin' | 'signup';
 function AppContent() {
   const { status } = useAuth();
   const guest = useGuestSession();
+  const { token: guestToken, transcript: guestTranscript, revokeSession, importToAccount } = guest;
   const [entry, setEntry] = useState<EntryScreen>('welcome');
   const [authMode, setAuthMode] = useState<AuthMode>('signup');
   const [guestStarting, setGuestStarting] = useState(false);
@@ -31,13 +32,13 @@ function AppContent() {
   const attemptedGuestToken = useRef<string | null>(null);
 
   const importGuestConversation = useCallback(async () => {
-    if (!guest.token || guest.transcript.length === 0) return;
+    if (!guestToken || guestTranscript.length === 0) return;
     setGuestImporting(true);
     setGuestImportError(null);
     try {
       const accessToken = await restoreBearerToken();
       if (!accessToken) throw new Error('La session Aurex est introuvable. Reconnectez-vous pour terminer le transfert.');
-      await guest.importToAccount(accessToken);
+      await importToAccount(accessToken);
       setChatRevision((current) => current + 1);
       setGuestImportError(null);
     } catch (cause) {
@@ -45,17 +46,17 @@ function AppContent() {
     } finally {
       setGuestImporting(false);
     }
-  }, [guest.token, guest.transcript.length, guest.importToAccount]);
+  }, [guestToken, guestTranscript.length, importToAccount]);
 
   useEffect(() => {
-    if (status !== 'authenticated' || !guest.token || attemptedGuestToken.current === guest.token) return;
-    attemptedGuestToken.current = guest.token;
-    if (guest.transcript.length === 0) {
-      void guest.revokeSession();
+    if (status !== 'authenticated' || !guestToken || attemptedGuestToken.current === guestToken) return;
+    attemptedGuestToken.current = guestToken;
+    if (guestTranscript.length === 0) {
+      void revokeSession();
       return;
     }
-    void importGuestConversation();
-  }, [status, guest.token, guest.transcript.length, guest.revokeSession, importGuestConversation]);
+    void Promise.resolve().then(importGuestConversation);
+  }, [status, guestToken, guestTranscript.length, revokeSession, importGuestConversation]);
 
   const startGuest = async () => {
     setGuestStarting(true);
