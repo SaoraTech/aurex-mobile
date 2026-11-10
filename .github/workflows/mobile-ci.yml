@@ -3,7 +3,8 @@ name: Mobile CI
 on:
   push:
     branches:
-      - chore/mobile-foundations
+      - main
+      - feat/mobile-complete-experience
   pull_request:
     branches:
       - main
@@ -22,8 +23,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: chore/mobile-foundations
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
