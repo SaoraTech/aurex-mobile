@@ -15,10 +15,11 @@ import { useAuth } from '../../core/auth/AuthProvider';
 import { colors, radius, spacing, typography } from '../../theme/tokens';
 
 type AuthMode = 'signin' | 'signup';
+type AuthScreenProps = { initialMode?: AuthMode; onBack?: () => void };
 
-export default function AuthScreen() {
+export default function AuthScreen({ initialMode = 'signup', onBack }: AuthScreenProps) {
   const { signIn, signUp } = useAuth();
-  const [mode, setMode] = useState<AuthMode>('signup');
+  const [mode, setMode] = useState<AuthMode>(initialMode);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -82,6 +83,7 @@ export default function AuthScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.container}>
+          {onBack ? <Pressable accessibilityRole="button" onPress={onBack} style={styles.backButton}><Text style={styles.backText}>← Retour</Text></Pressable> : null}
           <View style={styles.topBar}>
             <View style={styles.brand}>
               <BrandMark size={42} />
@@ -269,6 +271,8 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xxl,
     paddingBottom: spacing.xxxl,
   },
+  backButton: { alignSelf: 'flex-start', paddingVertical: spacing.sm, marginBottom: spacing.md },
+  backText: { color: colors.primary, fontFamily: typography.semibold, fontSize: typography.size.sm },
   topBar: {
     flexDirection: 'row',
     alignItems: 'center',
