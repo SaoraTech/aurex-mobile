@@ -3,7 +3,7 @@ const configuredBaseUrl =
   || process.env.EXPO_PUBLIC_AUREX_API_URL
   || 'https://aurex-back.onrender.com';
 
-export const apiBaseUrl = configuredBaseUrl.trim().replace(/\\/+$/, '');
+export const apiBaseUrl = configuredBaseUrl.trim().replace(/\/+$/, '');
 
 export const isApiConfigured = apiBaseUrl.length > 0;
 
